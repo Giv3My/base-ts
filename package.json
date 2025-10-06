@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "test:ui": "vitest",
-    "start": "nodemon src/$npm_config_folder/index.ts",
-    "test": "vitest run src/$npm_config_folder/",
+    "start": "nodemon src/%npm_config_folder%/index.ts",
+    "test": "vitest run src/%npm_config_folder%/",
     "test:all": "ts-node ./src/run-all-tests.ts"
   },
   "keywords": [],
