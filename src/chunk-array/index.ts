@@ -26,5 +26,10 @@ import { ChunkArrayFn } from './types';
  * []
  */
 export const chunkArray: ChunkArrayFn = (arr, size) => {
-  throw new Error('Not Implemented');
+  if (size <= 0 || arr.length === 0) return [];
+
+  const chunk = arr.slice(0, size);
+  const remaining = arr.slice(size);
+
+  return [chunk, ...chunkArray(remaining, size)];
 };
