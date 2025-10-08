@@ -31,15 +31,14 @@ export const groupBy: GroupByFn = (array, key) => {
 
   array.forEach((item) => {
     const mapKey = item[key];
+    const exists = map.get(mapKey);
 
-    const mapItem = map.get(mapKey);
-
-    if (!mapItem) {
+    if (!exists) {
       map.set(mapKey, [item]);
       return;
     }
 
-    map.set(mapKey, [...mapItem, item]);
+    exists.push(item);
   });
 
   return Object.fromEntries(map);
