@@ -19,6 +19,37 @@ import { CalculateAverageRatingsFn } from 'movie-average-rating/types';
  *   { movieId: 11, averageScore: 7 }
  * ]
  */
+const groupBy = <T>(array: T[], key: keyof T): Record<keyof T, T[]> => {
+  const map = new Map();
+
+  array.forEach((item) => {
+    const mapKey = item[key];
+
+    const mapItem = map.get(mapKey);
+
+    if (!mapItem) {
+      map.set(mapKey, [item]);
+      return;
+    }
+
+    map.set(mapKey, [...mapItem, item]);
+  });
+
+  return Object.fromEntries(map);
+};
+
 export const calculateAverageRatings: CalculateAverageRatingsFn = (ratings) => {
-  throw new Error('Not Implemented');
+  const groupedRatings = groupBy(ratings, 'movieId');
+
+  const result = Object.entries(groupedRatings).map(([movieId, ratings]) => {
+    const total = ratings.reduce((acc, rating) => acc + rating.score, 0);
+    const average = total / ratings.length;
+
+    return {
+      movieId: Number(movieId),
+      averageScore: Math.round(average * 10) / 10,
+    };
+  });
+
+  return result;
 };
