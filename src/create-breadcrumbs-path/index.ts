@@ -16,6 +16,24 @@ import { CreateBreadcrumbsFn } from './types';
  *   { path: '/home/products/electronics', label: 'Electronics' }
  * ]
  */
+const capitalizeString = (str: string) => {
+  return `${str[0].toUpperCase()}${str.slice(1)}`;
+};
+
 export const createBreadcrumbs: CreateBreadcrumbsFn = (paths) => {
-  throw new Error('Not Implemented');
+  return paths.map((path) => {
+    const segments = path.split('/').filter(Boolean);
+    const lastSegment = segments.at(-1);
+
+    if (!lastSegment) {
+      return { path: '/', label: 'Home' };
+    }
+
+    const label = capitalizeString(lastSegment);
+
+    return {
+      path,
+      label,
+    };
+  });
 };
