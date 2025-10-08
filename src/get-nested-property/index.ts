@@ -16,5 +16,10 @@ import { GetNestedPropertyFn } from './types';
  * Output: undefined
  */
 export const getNestedProperty: GetNestedPropertyFn = (obj, path) => {
-  throw new Error('Not Implemented');
+  return path
+    .split('.')
+    .reduce<unknown>(
+      (acc, key) => (acc != null ? acc[key as keyof typeof acc] : undefined),
+      obj,
+    );
 };
