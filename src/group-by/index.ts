@@ -27,5 +27,20 @@ import { GroupByFn } from 'group-by/types';
  * }
  */
 export const groupBy: GroupByFn = (array, key) => {
-  throw new Error('Not Implemented');
+  const map = new Map();
+
+  array.forEach((item) => {
+    const mapKey = item[key];
+
+    const mapItem = map.get(mapKey);
+
+    if (!mapItem) {
+      map.set(mapKey, [item]);
+      return;
+    }
+
+    map.set(mapKey, [...mapItem, item]);
+  });
+
+  return Object.fromEntries(map);
 };
