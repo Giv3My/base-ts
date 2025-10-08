@@ -19,15 +19,10 @@ import { FilterValidUsersFn, ValidUser } from './types';
  * ]
  */
 export const filterValidUsers: FilterValidUsersFn = (users) => {
-  return users.filter((user): user is ValidUser => {
-    if (
-      typeof user.name !== 'string' ||
-      typeof user.age !== 'number' ||
-      user.age <= 18
-    ) {
-      return false;
-    }
-
-    return true;
-  });
+  return users.filter(
+    (user): user is ValidUser =>
+      typeof user.name === 'string' &&
+      typeof user.age === 'number' &&
+      user.age > 18,
+  );
 };
