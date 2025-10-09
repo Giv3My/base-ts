@@ -18,5 +18,13 @@ export const pickOmitProperties = <T extends Record<string, unknown>>(
   keys: (keyof T)[],
   mode: PickOmitMode,
 ): Partial<T> => {
-  throw new Error('Not Implemented');
+  if (mode === 'pick') {
+    return Object.fromEntries(
+      Object.entries(obj).filter(([key]) => keys.includes(key)),
+    ) as Partial<T>;
+  }
+
+  return Object.fromEntries(
+    Object.entries(obj).filter(([key]) => !keys.includes(key)),
+  ) as Partial<T>;
 };
