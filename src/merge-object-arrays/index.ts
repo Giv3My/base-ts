@@ -20,5 +20,22 @@ export const mergeObjectArrays = <T extends Mergeable>(
   arr1: T[],
   arr2: T[],
 ): T[] => {
-  throw new Error('Not Implemented');
+  const map = new Map();
+
+  for (const obj of arr1) {
+    map.set(obj.id, { ...obj });
+  }
+
+  for (const obj of arr2) {
+    const exists = map.get(obj.id);
+
+    if (exists) {
+      map.set(obj.id, { ...exists, ...obj });
+      continue;
+    }
+
+    map.set(obj.id, { ...obj });
+  }
+
+  return Array.from(map.values());
 };
