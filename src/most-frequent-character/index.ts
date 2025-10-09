@@ -17,5 +17,21 @@ import { MostFrequentCharFn } from './types';
  * Output: ''
  */
 export const mostFrequentChar: MostFrequentCharFn = (text) => {
-  throw new Error('Not Implemented');
+  if (!text) {
+    return '';
+  }
+
+  const textArray = [...text];
+
+  const freq = textArray.reduce<Record<string, number>>((acc, char) => {
+    acc[char] = (acc[char] || 0) + 1;
+    return acc;
+  }, {});
+
+  return textArray.sort((a, b) => {
+    if (freq[b] === freq[a]) {
+      return text.indexOf(a) - text.indexOf(b);
+    }
+    return freq[b] - freq[a];
+  })[0];
 };
