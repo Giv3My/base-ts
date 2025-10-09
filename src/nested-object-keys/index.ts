@@ -15,6 +15,24 @@ import { NestedObjectKeysFn } from './types';
  * Input: {}
  * Output: []
  */
+const isObject = (obj: unknown): obj is Record<string, unknown> => {
+  return typeof obj === 'object' && obj !== null && !Array.isArray(obj);
+};
+
 export const nestedObjectKeys: NestedObjectKeysFn = (obj) => {
-  throw new Error('Not Implemented');
+  const result: string[] = [];
+
+  const helper = (current: Record<string, unknown>, path: string) => {
+    for (const key in current) {
+      const newPath = path ? `${path}.${key}` : key;
+      result.push(newPath);
+
+      if (isObject(current[key])) {
+        helper(current[key], newPath);
+      }
+    }
+  };
+
+  helper(obj, '');
+  return result;
 };
