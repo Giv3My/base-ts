@@ -15,6 +15,23 @@ import { SortByNestedFieldFn } from './types';
  *   { id: 1, user: { name: 'B' } }
  * ]
  */
+const getNestedProperty = (obj: unknown, path: string) => {
+  return path
+    .split('.')
+    .reduce<unknown>(
+      (acc, key) => (acc != null ? acc[key as keyof typeof acc] : undefined),
+      obj,
+    );
+};
+
 export const sortByNestedField: SortByNestedFieldFn = (arr, field) => {
-  throw new Error('Not Implemented');
+  return arr.sort((a, b) => {
+    const valA = getNestedProperty(a, field);
+    const valB = getNestedProperty(b, field);
+
+    if (!valA) return -1;
+    if (!valB) return 1;
+
+    return valA < valB ? -1 : 1;
+  });
 };
