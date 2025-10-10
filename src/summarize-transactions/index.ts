@@ -1,4 +1,4 @@
-import { SummarizeTransactionsFn } from 'summarize-transactions/types';
+import { SummarizeTransactionsFn, Summary } from 'summarize-transactions/types';
 
 /**
  * @task Summarize Transactions By User
@@ -28,5 +28,22 @@ import { SummarizeTransactionsFn } from 'summarize-transactions/types';
 export const summarizeTransactions: SummarizeTransactionsFn = (
   transactions,
 ) => {
-  throw new Error('Not Implemented');
+  const summaries: Record<string, Summary> = {};
+
+  for (const { userId, amount, type } of transactions) {
+    const key = String(userId) as keyof typeof summaries;
+
+    if (!summaries[key]) {
+      summaries[key] = { userId, totalIncome: 0, totalExpense: 0, net: 0 };
+    }
+
+    const totalField = type === 'income' ? 'totalIncome' : 'totalExpense';
+
+    summaries[key][totalField] += amount;
+
+    summaries[key].net =
+      summaries[key].totalIncome - summaries[key].totalExpense;
+  }
+
+  return Object.values(summaries);
 };
